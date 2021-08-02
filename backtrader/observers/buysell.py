@@ -46,15 +46,15 @@ class BuySell(Observer):
 
     plotinfo = dict(plot=True, subplot=False, plotlinelabels=True)
     plotlines = dict(
-        buy=dict(marker='^', markersize=8.0, color='lime',
+        buy=dict(marker='o', markersize=9.0, color='lime',
                  fillstyle='full', ls=''),
-        sell=dict(marker='v', markersize=8.0, color='red',
+        sell=dict(marker='o', markersize=9.0, color='red',
                   fillstyle='full', ls='')
     )
 
     params = (
         ('barplot', False),  # plot above/below max/min for clarity in bar plot
-        ('bardist', 0.015),  # distance to max/min in absolute perc
+        ('bardist', 0),  # distance to max/min in absolute perc
     )
 
     def next(self):
@@ -88,7 +88,7 @@ class BuySell(Observer):
         if not self.p.barplot:
             self.lines.buy[0] = value
         elif value == value:  # Not NaN
-            pbuy = self.data.low[0] * (1 - self.p.bardist)
+            pbuy = self.data.close[0] * (1 - self.p.bardist)
             self.lines.buy[0] = pbuy
 
         # Update buylen values
@@ -110,7 +110,7 @@ class BuySell(Observer):
         if not self.p.barplot:
             self.lines.sell[0] = value
         elif value == value:  # Not NaN
-            psell = self.data.high[0] * (1 + self.p.bardist)
+            psell = self.data.close[0] * (1 + self.p.bardist)
             self.lines.sell[0] = psell
 
         # Update selllen values
